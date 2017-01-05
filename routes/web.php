@@ -27,6 +27,10 @@ Route::put('user/{id}/resetPwd', 'Admin\UserController@updatePwd');
 Route::get('papers', 'Admin\PaperController@listPapers');
 Route::get('paper/{id}', 'Admin\PaperController@testing');
 
+Route::resource('admin/papers', 'Admin\PaperController');
+
+//以上利用用户组和middleware进行测试和修改
+
 
 
 

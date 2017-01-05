@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>湖南农业大学在线考试系统</title>
+    <title>湖南农大学在线考试系统</title>
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -48,6 +48,7 @@
 
                         @if(Auth::guest())
                             <li><a href="{{ url('/login') }}">登录</a></li>
+                            {{--<li><a href="{{ url('/register') }}">Register</a></li>--}}
                         @else
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -56,19 +57,20 @@
 
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="{{ url('user/'.Auth::user()->id.'/resetPwd') }}"><i class="fa fa-lock"></i> 修改密码</a></li>
-                                @can('manage')
-                                <li><a href="{{ url('admin/questions') }}"><i class="fa fa-btn fa-pencil"></i>题库管理</a></li>
-                                <li><a href="{{ url('admin/papers') }}"><i class="fa fa-btn fa-newspaper-o"></i>试卷管理</a></li>
-                                <li><a href="{{ url('admin/scoreMgr') }}"><i class="fa fa-btn fa-percent"></i>成绩管理</a></li>
-                                @can('manageUser')
-                                <li><a href="{{ url('admin/usersMgr') }}"><i class="fa fa-btn fa-users"></i>用户管理</a></li>
-                                @endcan
-                                <li><a href="{{ url('/admin/resources') }}"><i class="fa fa-btn fa-book"></i>资料库管理</a></li>
+                                  @if(Gate::allows('manage'))
+                                        <li><a href="{{ url('admin/questions') }}"><i class="fa fa-btn fa-pencil"></i>题库管理</a></li>
+                                        <li><a href="{{ url('admin/papers') }}"><i class="fa fa-btn fa-newspaper-o"></i>试卷管理</a></li>
+                                        <li><a href="{{ url('admin/scoreMgr') }}"><i class="fa fa-btn fa-percent"></i>成绩管理</a></li> 
+                                        @if(Gate::allows('manageUser'))                                    
+                                            <li><a href="{{ url('admin/usersMgr') }}"><i class="fa fa-btn fa-users"></i>用户管理</a></li>
+                                        @endif
+                                        <li><a href="{{ url('/admin/resources') }}"><i class="fa fa-btn fa-book"></i>资料库管理</a></li>
 
-                                @can('manageUser')
-                                <li><a href="{{ url('admin/logs') }}"><i class="fa fa-btn fa-calendar"></i>查看日志</a></li>
-                                @endcan
-                                @endcan
+                                        @if(Gate::allows('manageUser'))
+                                            <li><a href="{{ url('admin/logs') }}"><i class="fa fa-btn fa-calendar"></i>查看日志</a></li>
+                                        @endif
+                                    @endif
+                                
                                 <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>退出登录</a></li>
                             </ul>
                         </li>

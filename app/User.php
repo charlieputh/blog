@@ -34,10 +34,28 @@ class User extends Authenticatable
     ];
 
     public static $typeName = [
-        '管理员',
-        '教师',
-        '学生'
+        '管理员',          //ManageUser
+        '教师',            //manage
+        '学生'             //guest
     ];
+
+    //getthe admin type
+    public function getIsAdminAttribute(){
+        return $this->isAdmin();
+    }
+
+    public function isAdmin(){
+        return $this->type ==  User::$type['admin'];
+    }
+
+    public function isTeacher(){
+
+         return $this->type == User::$type['teacher'];
+    }
+
+    public function isStudent(){
+        return $this->type == User::$type['student'];
+    }
 
     public function papers() {
         return $this->belongsToMany('App\Paper', 'user_paper', 'uid', 'pid')
@@ -51,6 +69,10 @@ class User extends Authenticatable
     public function questions_pid() {
         return $this->belongsToMany('App\Question', 'user_question', 'uid', 'pid')
             ->withPivot('qid', 'ans');
+    }
+
+    public static function getType($type){
+        return User::$typeName[$type];
     }
 }
 
