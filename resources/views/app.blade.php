@@ -53,7 +53,16 @@
         </div>
     </nav>
 
-
+    @yield('content')
+    <!-- JavaScripts -->
+    <script src="/js/tinymce/tinymce.min.js"></script>
+    <script src="{{ asset('js/app_config.js') }}"></script>
+    <script src="{{ asset('js/material.min.js') }}"></script>
+    <script src="{{ asset('js/ripples.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script>
+        $.material.init();
+    </script>
 <!--Footer-->
 <footer class="page-footer blue center-on-small-only">
 

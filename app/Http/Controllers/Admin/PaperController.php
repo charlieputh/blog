@@ -51,6 +51,40 @@ class PaperController extends Controller
 
     }
 
+    public function update(Request $request,$id){
+        $start_time = Carbon::parse($request->get('start_time'));
+        $end_time = Carbon::parse($request->get('end_time'));
+        $this->validate($request, [
+            'name'=>'required|unique:papers,title,'.$id,
+            'multi_score'=>'required|numeric',
+            'judge_score'=>'required|numeric',
+            'time'=>'required|numeric',
+            'start_time'=>'required|date_format:Y-m-d\TG:i|before:'.$end_time->toDateTimeString(),
+            'end_time'=>'required|date_format:Y-m-d\TG:i'
+        ]);
+        $paper = Paper::find($id);
+        $paper->fill([
+            'title' => $request->get('name'),
+            'multi_score' => $request->get('multi_score'),
+            'judge_score' => $request->get('judge_score'),
+            'time' => $request->get('time'),
+            'full_score' => $paper->questions->where('type', 0)->count() * $request->get('multi_score') + $paper->questions->where('type', 1)->count() * $request->get('judge_score'),
+            'start_time' => $request->get('start_time'),
+            'end_time' => $request->get('end_time')
+        ]);
+        if($paper->save())
+            return redirect('admin/papers');
+        else
+            return redirect()->back()->withInput()->withErrors('保存失败！');
+    }
+
+    public function destroy($id){
+        $paper = Paper::find($id);
+        $paper->questions()->sync([]);
+        $paper->delete();
+        return redirect()->back();
+    }
+
     public function listPapers()
     {
 

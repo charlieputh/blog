@@ -29,6 +29,8 @@ Route::get('paper/{id}', 'Admin\PaperController@testing');
 
 Route::resource('admin/papers', 'Admin\PaperController');
 
+//about Question
+Route::resource('admin/questions','Admin\QuestionController');
 //以上利用用户组和middleware进行测试和修改
 
 
