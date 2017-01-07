@@ -18,7 +18,6 @@
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/font-awesome.css') }}" rel="stylesheet">
     <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
-    <script src="{{ asset('js/app.js') }}"></script>
 
 </head><body id="app-layout">
     <!-- -->
@@ -81,6 +80,17 @@
     </nav>
 
 @yield('content')
+        <!-- JavaScripts -->
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
+    <script src="/js/tinymce/tinymce.min.js"></script>
+    <script src="{{ asset('js/app_config.js') }}"></script>
+    <script src="{{ asset('js/material.min.js') }}"></script>
+    <script src="{{ asset('js/ripples.min.js') }}"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/app_add.js') }}"></script>
+    <script>
+        $.material.init();
+    </script>
 <!--Footer-->
 <footer class="navbar-fixed-bottom page-footer blue center-on-small-only" >
 
