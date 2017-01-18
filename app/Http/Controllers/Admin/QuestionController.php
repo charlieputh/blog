@@ -5,25 +5,20 @@
  * Date: 2017/1/5
  * Time: 20:30
  */
-
 namespace App\Http\Controllers\Admin;
-
 use App\Http\Controllers\Controller;
 use App\Question;
 use Symfony\Component\HttpFoundation\Request;
-
 class QuestionController extends Controller
 {
     //GET THE QUESTION'S TYPE
     public static function getType($type){
         return Question::$Type[$type];
     }
-
     //GET THE QUESTION'S ANS
     public static function getAns($type, $ans) {
-    return Question::$Ans[$type*4 + $ans];
+        return Question::$Ans[$type*4 + $ans];
     }
-
     public function index(Request $request){
         if($request->has('query'))
             $questions = Question::where('content','like','%'.$request->get('query').'%')->paginate(20);
@@ -33,7 +28,6 @@ class QuestionController extends Controller
             $questions = Question::where('type',0)->paginate(29);
         else
             $questions = Question::where('type',1)->paginate(20);
-
         return view('admin.questions.index',[
             'questions' =>$questions,
             'questions_count' => [

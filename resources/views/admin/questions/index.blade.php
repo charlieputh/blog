@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layout.app')
 
 @section('content')
     <div class="container-fluid">
@@ -16,7 +16,7 @@
                             </div>
                         @endif
 
-                        <button class="btn btn-block btn-success btn-lg btn-raised" id="add-question">添加题目</button>
+                        <button class="btn btn-block btn-success btn-lg btn-raised" id="add-question1">添加题目</button>
                         <br>
                         <form action="questions" class="form-inline">
                             <a href="?filter=all" class="btn btn-primary btn-raised">显示全部 <span class="badge">{{ $questions_count['all'] }}</span></a>
