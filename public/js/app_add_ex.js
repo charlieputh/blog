@@ -49,6 +49,7 @@ $(document).ready(function () {
 
     //delete question module
     $('body').on('click', '.delete-question', function () {
+        alert("hello");
         var qid = $(this).val();
         toastr.warning('你确定要删除？<br><button class="btn btn-info btn-raised btn-raised" id="delete-question-sure">确定</button>');
         $('#delete-question-sure').click(function () {
@@ -105,7 +106,7 @@ $(document).ready(function () {
 
         var data = {
             type: $('#qtype').val(),
-            content: $('#qcontent').val();
+            content: $('#qcontent').val(),
             A: $('#qA').val(),
             B: $('#qB').val(),
             C: $('#qC').val(),
@@ -113,6 +114,103 @@ $(document).ready(function () {
             ans: $('#qans').val()
         };
 
-        
+        if($('#qsave').val() == 'update'){
+            var type = 'PUT';
+            var url = qual + '/'+ qid;
+        }else{
+            var type = 'POST';
+            var url = qurl;
+        }
+
+        console.log(data);
+        console.log(url);
+
+        $.ajax({
+            type: type,
+            url:url,
+            data: data,
+            dataType: 'json',
+            success: function success(data){
+                console.log(data);
+
+                var question = '<tr id="question' + data.id + '">' + '<td>' + (data.type == 0 ? "单选" : "判断") + '</td>' + '<td>' + data.content + '</td>' + '<td>' + data.A + '</td>' + '<td>' + data.B + '</td>' + '<td>' + data.C + '</td>' + '<td>' + data.D + '</td>' + '<td>' + getAns(data.type, data.ans) + '</td>' + '<td><button class="btn btn-info edit-question btn-raised" value="' + data.id + '">修改</button> ' + '<button class="btn btn-warning delete-question btn-raised" value="' + data.id + '">删除</button>' + '</td>' + '</tr>';
+                console.log(question);
+
+                if ($('#qsave').val() == 'update') {
+                    $('#question' + data.id).replaceWith(question);
+                    toastr.success('修改成功！');
+                } else {
+                    $('tbody').append(question);
+                    toastr.success('添加成功！');
+                }
+
+                $('#questionModal').modal('hide');
+            },
+            error: function error(data, json, errorThrown) {
+                console.log(data);
+                // $('.panel-body').append(data.responseText);
+                var errors = data.responseJSON;
+                var errorsHtml = '';
+                $.each(errors, function (key, value) {
+                    errorsHtml += '<li>' + value[0] + '</li>';
+                });
+                toastr.error(errorsHtml, "Error " + data.status + ': ' + errorThrown);
+            }
+        });
+    });
+
+    //paper manage: teacher relate the papers and question
+    var purl = 'edit/';
+    $('body').on('click', '.paper-question-action', function () {
+        var button = $(this);
+        var action = button.text();
+        var qid = button.val();
+        console.log(action);
+        if (action == '添加') {
+            $.ajax({
+                async:false,
+                type: 'put',
+                url: purl + qid,
+                success: function success(data) {
+                    button.attr('class', 'btn btn-warning paper-question-action btn-raised');
+                    button.text('移除');
+                    console.log(data);
+                    toastr.success('添加成功');
+                },
+                error: function error(data, json, errorThrown) {
+                    console.log(data);
+                    // $('.panel-body').append(data.responseText);
+                    var errors = data.responseJSON;
+                    var errorsHtml = '';
+                    $.each(errors, function (key, value) {
+                        errorsHtml += '<li>' + value[0] + '</li>';
+                    });
+                    toastr.error(errorsHtml, "Error " + data.status + ': ' + errorThrown);
+                    $('.panel-body').append(data.responseText);
+                }
+            });
+        } else {
+            $.ajax({
+                type: 'delete',
+                url: purl + qid,
+                success: function success(data) {
+                    button.attr('class', 'btn btn-info paper-question-action btn-raised');
+                    button.text('添加');
+                    console.log(data);
+                    toastr.warning('移除成功');
+                },
+                error: function error(data, json, errorThrown) {
+                    console.log(data);
+                    // $('.panel-body').append(data.responseText);
+                    var errors = data.responseJSON;
+                    var errorsHtml = '';
+                    $.each(errors, function (key, value) {
+                        errorsHtml += '<li>' + value[0] + '</li>';
+                    });
+                    toastr.error(errorsHtml, "Error " + data.status + ': ' + errorThrown);
+                    $('.panel-body').append(data.responseText);
+                }
+            });
+        }
     });
 });

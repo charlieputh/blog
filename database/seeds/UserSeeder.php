@@ -13,20 +13,30 @@ class UserSeeder extends Seeder
     {
         //Generate 2 kinds of uers
 
-        //Normal User 0 is admin 1 is normal
-        User::create([
-            'uid' => '2014402',
-            'name' => 'charlie1',
-            'type' => '1',
-            'password' => bcrypt('a137988166'),
-        ]);
-        //admin
+//        // 0 is super admin
 //        User::create([
 //            'uid'=>'20142',
 //            'name'=>'teacher',
 //            'type'=>'0',
 //            'password'=>bcrypt('123456'),
 //        ]);
+//
+//        // 1 is nomal teacher
+//        User::create([
+//            'uid' => '2014402',
+//            'name' => 'charlie1',
+//            'type' => '1',
+//            'password' => bcrypt('a137988166'),
+//        ]);
+        // 2 is student without authentications
+//        User::create([
+//            'uid' => '2014401',
+//            'name' => 'student_test',
+//            'type' => '2',
+//            'password' => bcrypt('123456'),
+//        ]);
+
+
     }
 }
 

@@ -36,11 +36,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="start_time">开始时间</label>
-                                <input type="datetime-local" class="form-control" name="start_time" id="start_time" placeholder="开始时间" value="{{ old('start_time', \Carbon\Carbon::parse($paper->start_time)->format('Y-m-d\TH:i')) }}">
+                                <input type="datetime-local" class="form-control" name="start_time" id="start_time" placeholder="开始时间" value="{{ old('start_time', \Carbon\Carbon::parse($paper->start_time)->format('Y-m-d\TG:i')) }}">
                             </div>
                             <div class="form-group">
                                 <label for="end_time">结束时间</label>
-                                <input type="datetime-local" class="form-control" name="end_time" id="end_time" placeholder="结束时间" value="{{ old('end_time', \Carbon\Carbon::parse($paper->end_time)->format('Y-m-d\TH:i')) }}">
+                                <input type="datetime-local" class="form-control" name="end_time" id="end_time" placeholder="结束时间" value="{{ old('end_time', \Carbon\Carbon::parse($paper->end_time)->format('Y-m-d\TG:i')) }}">
                             </div>
                             {{ method_field('PUT') }}
                             <button type="submit" class="btn btn-success btn-raised">提交</button>
@@ -66,9 +66,9 @@
                                     <td>{{ $question->content }}</td>
                                     <td>
                                         @if(in_array($question->id, $questions_added))
-                                            <button class="btn btn-warning paper-question-action btn-raised" value="{{ $question->id }}">移除</button>
+                                            <button class="paper-question-action btn btn-warning btn-raised" value="{{ $question->id }}">移除</button>
                                         @else
-                                            <button class="btn btn-info paper-question-action btn-raised" value="{{ $question->id }}">添加</button>
+                                            <button class="paper-question-action btn btn-info btn-raised" value="{{ $question->id }}">添加</button>
                                         @endif
                                     </td>
                                 </tr>

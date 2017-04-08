@@ -53,8 +53,7 @@
                                     <button type="submit" class="btn btn-success btn-raised">
                                         <i class="fa fa-btn fa-sign-in"></i> 登陆
                                     </button>
-
-                                    {{--<a class="btn btn-link" href="{{ url('/password/reset') }}">忘记密码?</a>--}}
+                                    {{--need to implement--}}
                                 </div>
                             </div>
                         </form>

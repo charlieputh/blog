@@ -8,7 +8,8 @@ use App\User;
 use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use Excel;
+use Illuminate\Validation;
 
 class PaperController extends Controller
 {
@@ -55,7 +56,7 @@ class PaperController extends Controller
         $start_time = Carbon::parse($request->get('start_time'));
         $end_time = Carbon::parse($request->get('end_time'));
         $this->validate($request, [
-            'name'=>'required|unique:papers,title,'.$id,
+            'name'=>'required|unique:papers,title',
             'multi_score'=>'required|numeric',
             'judge_score'=>'required|numeric',
             'time'=>'required|numeric',
@@ -83,6 +84,13 @@ class PaperController extends Controller
         $paper->questions()->sync([]);
         $paper->delete();
         return redirect()->back();
+    }
+
+    public function scoreIndex() {
+        $papers = Paper::where('full_score', '<>', 0)->orderBy('created_at', 'desc')->paginate(10);
+        return view('admin.scoreMgr.index', [
+            'papers' => $papers,
+        ]);
     }
 
     public function listPapers()
@@ -115,10 +123,10 @@ class PaperController extends Controller
                 'end_time' => Carbon::now()->addMinutes($paper->time)->min(Carbon::parse($paper->end_time)),
                 'score' => -1,
             ]);
-        //进行试卷和问题的关联 关联了中间表才会有数据
-        $paper->questions()->attach(
-            Question::find(1)
-        );
+//        //进行试卷和问题的关联 关联了中间表才会有数据
+//        $paper->questions()->attach(
+//            Question::find(1)
+//        );
         //dd($user_paper);//怎么有时候是null 有时候又不是null
         //dd($paper->questions()->where('type', 0)->count());
         return view('paper.testing', [
@@ -128,5 +136,48 @@ class PaperController extends Controller
         ]);
     }
 
+    //store方法 保存创建试卷类型和分值
+    public function store(Request $request){
+        $start_time = Carbon::parse($request->get('start_time'));
+        $end_time = Carbon::parse($request->get('end_time'));
+        //检查各项格式
+        $this->validate($request,[
+            'name'=>'required|unique:papers,title',
+            'multi_score'=>'required|numeric',
+            'judge_score'=>'required|numeric',
+            'time'=>'required|numeric',
+            'start_time'=>'required|date_format:Y-m-d\TG:i|before:'.$end_time->toDateTimeString(),
+            'end_time'=>'required|date_format:Y-m-d\TG:i'
+        ]);
+        //若接收 重定向 admin/papers 否则返回错误
+        if(Paper::create([
+            'title' => $request->get('name'),
+            'full_score' => $request->get('full_score'),
+            'multi_score' => $request->get('multi_score'),
+            'judge_score' => $request->get('judge_score'),
+            'time' => $request->get('time'),
+            'start_time' => $request->get('start_time'),
+            'end_time' => $request->get('end_time')
+        ]))
+            return redirect('admin/papers');
+        else
+            return redirect()->back()->withInput()->withErrors('保存失败！');
+    }
+
+    public function attachQuestionToPage()
+    {
+        $paperId = request()->input('paperId');
+        $type = request()->input('type');
+        $amountOfQuestion = request()->input('numberQ');
+        $paper = Paper::find($paperId);
+
+        $questions = Question::where('type' ,  $type)->limit($amountOfQuestion)->get();
+
+        foreach ($questions as $question){
+            $paper->questions()->attach($question);
+        }
+
+        return "yep";
+    }
 }
 

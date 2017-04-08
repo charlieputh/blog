@@ -21,6 +21,10 @@
                                 <input type="text" class="form-control" name="name" id="name" placeholder="paper name" value="{{ old('title') }}">
                             </div>
                             <div class="form-group">
+                                <label for="name">总分</label>
+                                <input type="text" class="form-control" name="full_score" id="full_score" placeholder="full_score" value="{{ old('full_score') }}">
+                            </div>
+                            <div class="form-group">
                                 <label for="multi_score">单选题分值</label>
                                 <input type="number" step="0.1" name="multi_score" class="form-control" id="multi_score" placeholder="单选题分值" value="{{ old('multi_score') }}">
                             </div>
