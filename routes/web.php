@@ -36,5 +36,10 @@ Route::resource('admin/questions','Admin\QuestionController');
 
 //about scoreMgr
 Route::get('admin/scoreMgr', 'Admin\PaperController@scoreIndex');
+Route::get('admin/scoreMgr/{pid}', 'Admin\PaperController@listExaminees');
+Route::delete('admin/scoreMgr/{pid}/reExam/{uid}', 'Admin\PaperController@reExam');
+Route::get('paper/{id}/remaintime', 'Admin\PaperController@examRemainTime');
+Route::post('paper/{id}/submit', 'Admin\PaperController@examSubmit');
+
 //以上利用用户组和middleware进行测试和修改
 

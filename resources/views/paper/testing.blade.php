@@ -143,7 +143,7 @@
                                         {{ csrf_field() }}
                                         <button id="examSubmit" type="submit" class="btn btn-primary btn-raised">交卷</button>
                                     </div>
-                                    <script>
+                                    <script type="text/javascript">
                                         // exam
                                         tip = true;
                                         submitted = false;

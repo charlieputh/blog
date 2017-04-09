@@ -2,6 +2,7 @@
  * Created by charlie on 2017/1/7.
  */
 //  app
+
 $(document).ready(function () {
     $(".delete").on("submit", function () {
         return confirm("确定要删除？");

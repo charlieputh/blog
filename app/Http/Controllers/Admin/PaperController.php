@@ -8,12 +8,13 @@ use App\User;
 use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 use Excel;
 use Illuminate\Validation;
 
 class PaperController extends Controller
 {
-    //
     public function index()
     {
         return view('admin.papers.index', [
@@ -102,6 +103,17 @@ class PaperController extends Controller
         ]);
     }
 
+    //ListExaminees
+    public function listExaminees($pid)
+    {
+       $paper = Paper::find($pid);
+       $examinees = $paper->users()->orderBy('score','desc')->paginate(10);
+       return view('admin.scoreMgr.examinees',[
+            'paper' => $paper,
+            'examinees' => $examinees
+        ]);
+    }
+
     //传入是字符串的问题
     public function testing($id)
     {
@@ -129,11 +141,78 @@ class PaperController extends Controller
 //        );
         //dd($user_paper);//怎么有时候是null 有时候又不是null
         //dd($paper->questions()->where('type', 0)->count());
+        $user_paper = $user->papers()->find($id);
         return view('paper.testing', [
             'paper' => $paper,
             'user' => $user,
             'user_paper' => $user_paper,
         ]);
+    }
+    //剩余时间
+    public function examRemainTime($id){
+        $pivot = auth()->user()->papers()->find($id)->pivot;
+        $start_time = Carbon::parse($pivot->start_time);
+        $end_time = Carbon::parse($pivot->end_time);
+        $now = Carbon::now();
+        $all=$start_time->diffInSeconds($end_time);
+        $timeUsed = $start_time->diffInSeconds($now);
+        $remainTime = $all - $timeUsed;
+        $remainTime_minute = $remainTime / 60;
+
+        if($now >= $end_time)
+            return \Response::json([
+                'all'=>$all,
+                'timeUsed'=>$timeUsed,
+                'remainTime'=>0,
+                'remainTime_Minute'=>0,
+                'percent'=>'100%',
+            ]);
+        else
+            return \Response::json([
+                'all'=>$all,
+                'timeUsed'=>$timeUsed,
+                'remainTime'=>$remainTime,
+                'remainTime_Minute'=>round($remainTime_minute),
+                'percent'=>sprintf('%0.1f%%',$timeUsed*100/$all),
+            ]);
+    }
+    //提交试卷
+    public function examSubmit(Request $request,$id){
+        $user = auth()->user();
+        $paper = Paper::find($id);
+        if($user->papers()->find($id)->pivot->score != -1)
+            abort('403',"你已经交过卷");
+
+        $now = Carbon::now();
+        if($now->lt(Carbon::parse($paper->start_time)))
+            abort('403', '考试未开始！');
+        else if($now->gt(Carbon::parse($paper->end_time)->addMinutes(5)))
+            abort('403', '考试已结束！');
+
+        $scoreValue = [ $paper->multi_score, $paper->judge_score ];
+        $score = 0;
+
+        foreach ($paper->questions()->get() as $question) {
+            $ans = $request->get('question'.$question->id);
+            if($request->has('question'.$question->id)) {
+                if ($ans == $question->ans)
+                    $score += $scoreValue[$question->type];
+                $user->questions()->sync([$question->id => [
+                    'pid'=>$paper->id,
+                    'ans'=>$ans,
+                ]], false);
+            }
+            else {
+                $user->questions()->sync([$question->id => [
+                    'pid'=>$paper->id,
+                    'ans'=>-1,
+                ]], false);
+            }
+        }
+        $user->papers()->updateExistingPivot($paper->id, [
+            'score'=>$score,
+        ]);
+        return redirect('/papers');
     }
 
     //store方法 保存创建试卷类型和分值
@@ -178,6 +257,13 @@ class PaperController extends Controller
         }
 
         return "yep";
+    }
+
+    public function reExam($pid,$uid){
+        $user = User::find($uid);
+        $user->questions_pid()->detach($pid);
+        $user->papers()->detach($pid);
+        return redirect()->back();
     }
 }
 
