@@ -13,13 +13,13 @@ class UserSeeder extends Seeder
     {
         //Generate 2 kinds of uers
 
-//        // 0 is super admin
-//        User::create([
-//            'uid'=>'20142',
-//            'name'=>'teacher',
-//            'type'=>'0',
-//            'password'=>bcrypt('123456'),
-//        ]);
+        // 0 is super admin
+        User::create([
+            'uid'=>'201423',
+            'name'=>'teacher',
+            'type'=>'0',
+            'password'=>bcrypt('123456'),
+        ]);
 //
 //        // 1 is nomal teacher
 //        User::create([

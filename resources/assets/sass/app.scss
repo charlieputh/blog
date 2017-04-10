@@ -7,3 +7,246 @@
 
 // Bootstrap
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "node_modules/font-awesome/scss/font-awesome";
+@import "node_modules/toastr/toastr";
+
+
+body {
+  font-family: "Microsoft Yahei" ;
+}
+.article-heading {
+  text-align: center;
+  border-bottom: 3px solid #ccc;
+}
+.article-info {
+  text-align: center;
+  color: gray;
+}
+.fa-btn {
+  margin-right: 6px;
+}
+#paper input[type='checkbox'] {
+  width:20px;
+  height:20px;
+}
+.exam input[type='radio'] {
+  width:18px;
+  height:18px;
+}
+
+.exam {
+  font-size: 17px;
+}
+
+.btn-xlg {
+  padding-top:20px!important;
+  padding-bottom:20px!important;
+}
+
+.question-selection {
+  margin: 0 0 0 0!important;
+  padding-bottom: 0!important;
+  display: inline-block;
+}
+
+.question-multi {
+  color: black!important;
+}
+
+.button_common {
+  border-top: 1px solid #96d1f8;
+  padding: 20px 40px;
+  margin-bottom: 10px;
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+  -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+  -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+  box-shadow: rgba(0,0,0,1) 0 1px 0;
+  text-shadow: rgba(0,0,0,.4) 0 1px 0;
+  font-family: Georgia, serif;
+  vertical-align: middle;
+  text-align: center;
+}
+
+
+.online_study {
+  @extend .button_common;
+  background: url('/img/study.jpg');
+  background-size: cover;
+}
+
+.online_study_font {
+  font-size: 30px;
+  font-weight: bolder;
+  text-shadow: rgba(255,255,255,.1) -1px -1px 1px,rgba(0,0,0,.5) 1px 1px 1px;
+  color: blue;
+  text-decoration: none;
+}
+
+.online_study_font:hover {
+  color: blue;
+  text-decoration: none;
+}
+
+.online_study_font:focus {
+  color: blue;
+  text-decoration: none;
+}
+
+.online_exam {
+  @extend .button_common;
+  background: url('/img/exam.jpg');
+  background-size: cover;
+}
+
+.online_exam_font {
+  font-size: 30px;
+  font-weight: bolder;
+  text-shadow: rgba(255,255,255,.1) -1px -1px 1px,rgba(0,0,0,.5) 1px 1px 1px;
+  color: red;
+  text-decoration: none;
+}
+
+.online_exam_font:hover {
+  color: red;
+  text-decoration: none;
+}
+
+.online_exam_font:focus {
+  color: red;
+  text-decoration: none;
+}
+
+.rules {
+  @extend .button_common;
+  background: url('/img/rules.jpg');
+  background-size: 100% 100%;
+}
+
+.accident {
+  @extend .button_common;
+  background: url('/img/accident.jpg');
+  background-size: 100% 100%;
+}
+
+.safe_marking {
+  @extend .button_common;
+  background: url('/img/safe_marking.png');
+  background-size: 100% 100%;
+}
+
+.safe_course {
+  @extend .button_common;
+  background: url('/img/safe_course.jpg');
+  background-size: 100% 100%;
+}
+
+.types_font {
+  font-size: 18px;
+  font-weight: bolder;
+  text-shadow: rgba(255,255,255,.1) -1px -1px 1px,rgba(0,0,0,.5) 1px 1px 1px;
+  color: blue;
+  text-decoration: none;
+}
+.types_font:hover {
+  @extend .types_font;
+}
+
+.types_font:focus {
+  @extend .types_font;
+}
+
+.hfut_logo {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  width: 68px;
+}
+
+.hfut {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  height: 55px;
+}
+
+.chemlab {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  height: 40px;
+}
+
+.system_info {
+  max-height: 400px;
+  overflow-y: scroll;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px
+}
+
+::-webkit-scrollbar-button {
+  width: 0;
+  height: 0
+}
+
+::-webkit-scrollbar-button:end:decrement,::-webkit-scrollbar-button:start:increment {
+  display: none
+}
+
+::-webkit-scrollbar-corner {
+  display: block
+}
+
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 8px;
+  border-radius: 8px;
+  background-color: rgba(0,0,0,.2)
+}
+
+::-webkit-scrollbar-thumb:hover {
+  -webkit-border-radius: 8px;
+  border-radius: 8px;
+  background-color: rgba(0,0,0,.5)
+}
+
+::-webkit-scrollbar-thumb,::-webkit-scrollbar-track {
+  border-right: 1px solid transparent;
+  border-left: 1px solid transparent
+}
+
+::-webkit-scrollbar-track:hover {
+  background-color: rgba(0,0,0,.15)
+}
+
+::-webkit-scrollbar-button:start {
+  width: 10px;
+  height: 10px;
+  background: url(/img/scrollbar_arrow.png) no-repeat
+}
+
+::-webkit-scrollbar-button:start:hover {
+  background: url(/img/scrollbar_arrow.png) -15px 0 no-repeat
+}
+
+::-webkit-scrollbar-button:start:active {
+  background: url(/img/scrollbar_arrow.png) -30px 0 no-repeat
+}
+
+::-webkit-scrollbar-button:end {
+  width: 10px;
+  height: 10px;
+  background: url(/img/scrollbar_arrow.png) 0 -18px no-repeat
+}
+
+::-webkit-scrollbar-button:end:hover {
+  background: url(/img/scrollbar_arrow.png) -15px -18px no-repeat
+}
+
+::-webkit-scrollbar-button:end:active {
+  background: url(/img/scrollbar_arrow.png) -30px -18px no-repeat
+}
+
+

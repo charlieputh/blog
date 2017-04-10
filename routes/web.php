@@ -28,6 +28,8 @@ Route::get('papers', 'Admin\PaperController@listPapers');
 Route::get('paper/attachQuestionToPaper', 'Admin\PaperController@attachQuestionToPage');
 Route::get('paper/{id}', 'Admin\PaperController@testing');
 
+//about userMgr
+Route::resource('admin/usersMgr', 'Admin\UserController');
 
 Route::resource('admin/papers', 'Admin\PaperController');
 
@@ -40,6 +42,8 @@ Route::get('admin/scoreMgr/{pid}', 'Admin\PaperController@listExaminees');
 Route::delete('admin/scoreMgr/{pid}/reExam/{uid}', 'Admin\PaperController@reExam');
 Route::get('paper/{id}/remaintime', 'Admin\PaperController@examRemainTime');
 Route::post('paper/{id}/submit', 'Admin\PaperController@examSubmit');
+
+
 
 //以上利用用户组和middleware进行测试和修改
 
