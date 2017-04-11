@@ -66,9 +66,9 @@
                                     <td>{{ $question->content }}</td>
                                     <td>
                                         @if(in_array($question->id, $questions_added))
-                                            <button class="paper-question-action btn btn-warning btn-raised" value="{{ $question->id }}">移除</button>
+                                            <button class="btn btn-warning paper-question-action btn-raised" value="{{ $question->id }}">移除</button>
                                         @else
-                                            <button class="paper-question-action btn btn-info btn-raised" value="{{ $question->id }}">添加</button>
+                                            <button class="btn btn-info paper-question-action btn-raised" value="{{ $question->id }}">添加</button>
                                         @endif
                                     </td>
                                 </tr>

@@ -53,6 +53,24 @@ class PaperController extends Controller
 
     }
 
+    public function add_question($pid, $qid) {
+        $paper = Paper::find($pid);
+        $scoreValue = [$paper->multi_score, $paper->judge_score];
+        $paper->questions()->sync([$qid], false);
+        $paper->full_score += $scoreValue[Question::find($qid)->type];
+        $paper->save();
+        return \Response::json('success');
+    }
+
+    public function delete_question($pid, $qid) {
+        $paper = Paper::find($pid);
+        $paper->questions()->detach($qid);
+        $scoreValue = [$paper->multi_score, $paper->judge_score];
+        $paper->full_score -= $scoreValue[Question::find($qid)->type];
+        $paper->save();
+        return \Response::json('success');
+    }
+
     public function update(Request $request,$id){
         $start_time = Carbon::parse($request->get('start_time'));
         $end_time = Carbon::parse($request->get('end_time'));
@@ -114,39 +132,58 @@ class PaperController extends Controller
         ]);
     }
 
-    //传入是字符串的问题
     public function testing($id)
     {
         $paper = Paper::find($id);
         //$user  = Auth::user();
         $user = auth()->user();
-        //dd($user->papers());
-        //未完成 进行判断学生
+        if($user->isStudent()) {
+            $user_paper = $user->papers()->find($id);
+            $now = Carbon::now();
+            if($now->lt(Carbon::parse($paper->start_time)))
+                abort('403', '考试未开始！');
 
-        //如果是没有考过的
-        $user_paper = $user->papers()->find($id);
-        $now = Carbon::now();
-        if ($now->lt(Carbon::parse($paper->start_time)))
-            abort('403', '考试未开始！');
+            if(! $user_paper) // 未考过
+                $user->papers()->attach($id, [
+                    'start_time'=>Carbon::now(),
+                    'end_time'=>Carbon::now()->addMinutes($paper->time)->min(Carbon::parse($paper->end_time)),
+                    'score'=>-1,
+                ]);
+        }
 
-        if (!$user_paper) // 未考过
-            $user->papers()->attach($id, [
-                'start_time' => Carbon::now(),
-                'end_time' => Carbon::now()->addMinutes($paper->time)->min(Carbon::parse($paper->end_time)),
-                'score' => -1,
-            ]);
-//        //进行试卷和问题的关联 关联了中间表才会有数据
-//        $paper->questions()->attach(
-//            Question::find(1)
-//        );
-        //dd($user_paper);//怎么有时候是null 有时候又不是null
-        //dd($paper->questions()->where('type', 0)->count());
         $user_paper = $user->papers()->find($id);
         return view('paper.testing', [
-            'paper' => $paper,
-            'user' => $user,
-            'user_paper' => $user_paper,
+            'paper'=>$paper,
+            'user'=>$user,
+            'user_paper'=>$user_paper,
         ]);
+//        //dd($user->papers());
+//        //未完成 进行判断学生
+//
+//        //如果是没有考过的
+//        $user_paper = $user->papers()->find($id);
+//        $now = Carbon::now();
+//        if ($now->lt(Carbon::parse($paper->start_time)))
+//            abort('403', '考试未开始！');
+//
+//        if (!$user_paper) // 未考过
+//            $user->papers()->attach($id, [
+//                'start_time' => Carbon::now(),
+//                'end_time' => Carbon::now()->addMinutes($paper->time)->min(Carbon::parse($paper->end_time)),
+//                'score' => -1,
+//            ]);
+////        //进行试卷和问题的关联 关联了中间表才会有数据
+////        $paper->questions()->attach(
+////            Question::find(1)
+////        );
+//        //dd($user_paper);//怎么有时候是null 有时候又不是null
+//        //dd($paper->questions()->where('type', 0)->count());
+//        $user_paper = $user->papers()->find($id);
+//        return view('paper.testing', [
+//            'paper' => $paper,
+//            'user' => $user,
+//            'user_paper' => $user_paper,
+//        ]);
     }
     //剩余时间
     public function examRemainTime($id){

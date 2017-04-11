@@ -13223,7 +13223,6 @@ $(document).ready(function () {
                 },
                 error: function error(data, json, errorThrown) {
                     console.log(data);
-                    // $('.panel-body').append(data.responseText);
                     var errors = data.responseJSON;
                     var errorsHtml = '';
                     $.each(errors, function (key, value) {
@@ -13245,7 +13244,6 @@ $(document).ready(function () {
                 },
                 error: function error(data, json, errorThrown) {
                     console.log(data);
-                    // $('.panel-body').append(data.responseText);
                     var errors = data.responseJSON;
                     var errorsHtml = '';
                     $.each(errors, function (key, value) {
