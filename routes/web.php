@@ -25,13 +25,15 @@ Route::put('user/{id}/resetPwd', 'Admin\UserController@updatePwd');
 
 //about Paper
 Route::get('papers', 'Admin\PaperController@listPapers');
-Route::get('paper/attachQuestionToPaper', 'Admin\PaperController@attachQuestionToPage');
+//Route::get('paper/attachQuestionToPaper', 'Admin\PaperController@attachQuestionToPage');
 Route::get('paper/{id}', 'Admin\PaperController@testing');
-Route::put('papers/{pid}/edit/{qid}', 'Admin\PaperController@add_question');
-Route::delete('papers/{pid}/edit/{qid}', 'Admin\PaperController@delete_question');
+
 
 //about userMgr
 Route::resource('admin/usersMgr', 'Admin\UserController');
+Route::put('admin/papers/{pid}/edit/{qid}', 'Admin\PaperController@add_question');
+Route::delete('admin/papers/{pid}/edit/{qid}', 'Admin\PaperController@delete_question');
+
 
 Route::resource('admin/papers', 'Admin\PaperController');
 

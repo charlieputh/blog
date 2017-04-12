@@ -35,16 +35,14 @@
                                     <td>{{ $paper->end_time }}</td>
                                     <td>
                                         @can('manage')
-                                        <a href="paper/{{ $paper->id }}" class="btn btn-info btn-raised">浏览试卷</a>
+                                            <a href="paper/{{ $paper->id }}" class="btn btn-info btn-raised">浏览试卷</a>
                                         @else
-                                            @if(Auth::check())
-                                                @if(!auth()->user()->papers()->find($paper->id) || auth()->user()->papers()->find($paper->id)->pivot->score == -1)
-                                                    <a href="paper/{{ $paper->id }}" class="btn btn-success btn-raised">开始考试</a>
-                                                @else
-                                                    <a href="paper/{{ $paper->id }}" class="btn btn-info btn-raised">答题结果</a>
-                                                @endif
-                                                @endcan
+                                            @if(!auth()->user()->papers()->find($paper->id) || auth()->user()->papers()->find($paper->id)->pivot->score == -1)
+                                                <a href="paper/{{ $paper->id }}" class="btn btn-primary btn-raised">开始考试</a>
+                                            @else
+                                                <a href="paper/{{ $paper->id }}" class="btn btn-info btn-raised">答题结果</a>
                                             @endif
+                                        @endcan
                                     </td>
                                 </tr>
                             @endforeach
